@@ -5,7 +5,7 @@ import numpy as np
 
 def load_and_build_data():
     """Load data and convert it to the metric system."""
-    path_dataset = "C:\\Users\\maxen\\Documents\\Master EPFL\\MA1\\Machine learning\\project1\data\\train.csv" #don't forget double backslash
+    path_dataset = "INSERT_PATH\\data\\train.csv" #don't forget double backslash
     data = np.genfromtxt(
         path_dataset, delimiter=",", skip_header=1)
     y_bs = np.genfromtxt(
