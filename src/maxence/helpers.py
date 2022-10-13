@@ -5,18 +5,19 @@ import numpy as np
 
 def load_and_build_data():
     """Load data and convert it to the metric system."""
-    path_dataset = "insert_path\\train.csv" #don't forget double backslash
+    path_dataset = "C:\\Users\\maxen\\Documents\\Master EPFL\\MA1\\Machine learning\\project1\data\\train.csv" #don't forget double backslash
     data = np.genfromtxt(
         path_dataset, delimiter=",", skip_header=1)
-    y_bs = data[:, 1]
+    y_bs = np.genfromtxt(
+        path_dataset, delimiter=",", skip_header=1, dtype=None, encoding=None, usecols=(1))
     x = np.asarray(data[:, 2:])
-    
+    #print(data[1,:])
     y = np.zeros(len(y_bs))
     for i in range(0, len(y_bs)):
         if y_bs[i] == 'b':
             y[i]=1
-        elif y_bs[i]=='s':
-            y[i]=0
+        elif y_bs[i]== 's':
+            y[i]=-1
         else:
             y[i]=-999
     
