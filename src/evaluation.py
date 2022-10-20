@@ -2,6 +2,8 @@ import numpy as np
 import datetime
 
 from helpers import *
+from utils import *
+
 from implementations import *
 
 DATASET_PATH = "../dataset/train.csv"
