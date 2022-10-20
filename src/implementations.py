@@ -5,6 +5,7 @@ from cmath import inf
 from utils import *
 from helpers import *
 
+
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """The Gradient Descent (GD) algorithm.
 
@@ -28,10 +29,10 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
 
         w = w - gamma * gradient
 
-        print("GD Epoch. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(
-            bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
+        #print("GD Epoch. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(
+        #    bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
 
-    return loss, w
+    return w, loss
 
 
 def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
@@ -63,7 +64,7 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
 
         #print("SGD iter. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
 
-    return loss, w
+    return w, loss
 
 
 def least_squares(y, tx):
