@@ -4,7 +4,9 @@ from helpers import *
 from implementations import *
 
 DATASET_PATH = "../dataset/train.csv"
-yb, input_data, ids = load_csv_data(DATASET_PATH, False)
+TEST_PATH = "../dataset/test.csv"
+
+yb, input_data, train_ids = load_csv_data(DATASET_PATH, False)
 
 y = yb
 tx = add_1_column(remove_false_columns(input_data))
@@ -52,6 +54,11 @@ def ls():
     print("Loss:",ls_loss)
     print("Weights:", ls_w)
     print()
+    
+    _, test_data, test_ids  = load_csv_data(TEST_PATH, False)
+    test_data = add_1_column(remove_false_columns(test_data))
+    evaluate_test_data(test_data, ls_w, test_ids)
+    
 
     return
 
@@ -78,6 +85,11 @@ def lr():
     print("Weights:", lr_w)
     print()
 
+
+    _, test_data, test_ids  = load_csv_data(TEST_PATH, False)
+    test_data = add_1_column(remove_false_columns(test_data))
+    evaluate_test_data(test_data, lr_w, test_ids)
+
     return
 
 
@@ -94,12 +106,29 @@ def rlr():
     print("Weights:", rlr_w)
     print()
     
+    ##produce csv
+    
     return
 
 
+def evaluate_test_data(test_data_X, weights,ids):
+    
+    predicted_y = test_data_X.dot(weights)
+    
+    print(predicted_y[0:30])
+    
+    labels_y = np.ones(len(predicted_y))
+    for i in range(len(predicted_y)):
+        if predicted_y[i] < 0.5:
+            labels_y[i] = -1
+    
+    create_csv_submission(ids, labels_y, "LogisticRegression.csv")
+    
+    return
+
 gd()
-sgd()
+#sgd()
 ls()
 #rr()
-lr()
-rlr()
+#lr()
+#lr()
