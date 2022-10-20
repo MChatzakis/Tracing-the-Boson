@@ -8,6 +8,7 @@ Utility
 -----------------
 """
 
+
 def compute_loss(y, X, w):
     """
     y: Vector of N dimensions (labels) [numpy array]
@@ -53,20 +54,20 @@ def remove_false_lines(y, x):
     '''
 
     [n, d] = np.shape(x)
-    n999=np.zeros(d)
-    index=[-1]
+    n999 = np.zeros(d)
+    index = [-1]
     for i in range(0, n):
-        if not(-999 in x[i, :]):
-            index=np.vstack([index, i])
+        if not (-999 in x[i, :]):
+            index = np.vstack([index, i])
         else:
             for j in range(0, d):
-                if (x[i, j]==-999):
-                    n999[j]=n999[j]+1
+                if (x[i, j] == -999):
+                    n999[j] = n999[j]+1
 
-    index=np.delete(index, 0)
+    index = np.delete(index, 0)
 
-    rx=x[index, :]
-    ry=y[index]
+    rx = x[index, :]
+    ry = y[index]
     return ry, rx, n999
 
 
@@ -77,15 +78,15 @@ def remove_false_columns(x):
     Return: rx: shape (nr, d) The data without columns containing -999
     '''
     [n, d] = np.shape(x)
-    n999=np.zeros(d)
-    index=[-1]
+    n999 = np.zeros(d)
+    index = [-1]
     for i in range(0, d):
-        if not(-999 in x[:, i]):
-            index=np.vstack([index, i])
+        if not (-999 in x[:, i]):
+            index = np.vstack([index, i])
 
-    index=np.delete(index, 0)
+    index = np.delete(index, 0)
 
-    rx=x[:, index]
+    rx = x[:, index]
     return rx
 
 
@@ -93,7 +94,7 @@ def add_1_column(x):
     ''' Take a x vector and add a 1 column at the beginning for the w0 element
     '''
     [n, d] = np.shape(x)
-    v=np.ones([n, 1])
+    v = np.ones([n, 1])
     return np.hstack((v, x))
 
 
@@ -111,10 +112,10 @@ def gradient_descent_logistic(y, X, w, gamma):
         loss: scalar number
         w: shape=(D, 1)
     """
-    
+
     loss = compute_loss_logistic(y, X, w)
     w = w-gamma*compute_gradient_logistic(y, X, w)
-    
+
     return loss, w
 
 
@@ -129,14 +130,14 @@ def compute_loss_logistic(y, X, w):
     Returns:
         a non-negative loss
     """
-    
-    [N, D]=np.shape(X)
+
+    [N, D] = np.shape(X)
     return 1/N*np.sum(np.log(1+np.exp(X @ w))-np.multiply(y, (X @ w)))
 
 
 def compute_gradient_logistic(y, X, w):
     """compute the gradient of loss.
-    
+
     Args:
         y:  shape=(N, 1)
         X: shape=(N, D)
@@ -146,7 +147,7 @@ def compute_gradient_logistic(y, X, w):
         a vector of shape (D, 1)
     """
     [N, D] = np.shape(X)
-    v1=sigmoid(X @ w)
+    v1 = sigmoid(X @ w)
     return 1/N*X.T @ (v1-y)
 
 
@@ -164,9 +165,8 @@ def sigmoid(t):
     >>> sigmoid(np.array([0.1, 0.1]))
     array([0.52497919, 0.52497919])
     """
-    e=np.exp(t)
+    e = np.exp(t)
     return np.divide(e, (1+e))
-
 
 
 """
@@ -174,6 +174,7 @@ def sigmoid(t):
 Actual Implementations
 -----------------
 """
+
 
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """The Gradient Descent (GD) algorithm.
@@ -198,7 +199,8 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
 
         w = w - gamma * gradient
 
-        print("GD Epoch. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
+        print("GD Epoch. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(
+            bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
 
     return loss, w
 
@@ -225,7 +227,7 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
         # since batch size is 1 might need to change dat
         for y_batch, tx_batch in batch_iter(y, tx, batch_size=batch_size, num_batches=1):
             gradient = compute_gradient(y_batch, tx_batch, w)
-            
+
             w = w - gamma * gradient
 
             loss = compute_loss(y, tx, w)
@@ -238,34 +240,34 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
 def least_squares(y, tx):
     """Calculate the least squares solution.
        returns mse, and optimal weights.
-    
+
     Args:
         y: numpy array of shape (N,), N is the number of samples.
         tx: numpy array of shape (N,D), D is the number of features.
-    
+
     Returns:
         w: optimal weights, numpy array of shape(D,), D is the number of features.
         mse: scalar.
 
     """
     # ***************************************************
-    
-    [N,D] = np.shape(tx)
+
+    [N, D] = np.shape(tx)
     w = np.zeros(D)
     w = np.linalg.solve(tx.T @ tx, tx.T) @ y
     mse = 1./(2*N)*((y-tx @ w).T @ (y-tx @ w))
-    
+
     return [w, mse]
 
 
 def ridge_regression(y, tx, lambda_):
     """implement ridge regression.
-    
+
     Args:
         y: numpy array of shape (N,), N is the number of samples.
         tx: numpy array of shape (N,D), D is the number of features.
         lambda_: scalar.
-    
+
     Returns:
         w: optimal weights, numpy array of shape(D,), D is the number of features.
 
@@ -274,25 +276,26 @@ def ridge_regression(y, tx, lambda_):
     >>> ridge_regression(np.array([0.1,0.2]), np.array([[2.3, 3.2], [1., 0.1]]), 1)
     array([0.03947092, 0.00319628])
     """
-    w = np.linalg.solve(tx.T.dot(tx) + lambda_*2*tx.shape[0]*np.identity(tx.shape[1]), tx.T.dot(y))
+    w = np.linalg.solve(tx.T.dot(tx) + lambda_*2 *
+                        tx.shape[0]*np.identity(tx.shape[1]), tx.T.dot(y))
     return w
 
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """Calculate the least squares solution.
        returns mse, and optimal weights.
-    
+
     Args:
         y: numpy array of shape (N,), N is the number of samples.
         tx: numpy array of shape (N,D), D is the number of features.
-    
+
     Returns:
         w: optimal weights, numpy array of shape(D,), D is the number of features.
         mse: scalar.
 
     """
     losses = []
-    w=initial_w
+    w = initial_w
 
     for iter in range(max_iters):
         # get loss and update w.
