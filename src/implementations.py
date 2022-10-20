@@ -134,5 +134,24 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     return loss, w
 
 
-def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
-    raise NotImplementedError
+def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma_):
+    """Calculate the least squares solution.
+       returns mse, and optimal weights.
+    
+    Args:
+        y: numpy array of shape (N,), N is the number of samples.
+        tx: numpy array of shape (N,D), D is the number of features.
+    
+    Returns:
+        w: optimal weights, numpy array of shape(D,), D is the number of features.
+        mse: scalar.
+
+    """
+    
+    w=initial_w
+
+    for iter in range(max_iters):
+        # get loss and update w.
+        loss, w = reg_gradient_descent_logistic(y, tx, lambda_, w, gamma_)
+
+    return loss, w

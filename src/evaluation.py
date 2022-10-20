@@ -82,12 +82,12 @@ def lr():
 
 
 def rlr():
+    lambda_=1e-6
     max_iters = 100
     gamma = 0.000001
     features_num = tx.shape[1]
     w_initial = np.zeros(features_num)
-    rlr_loss, rlr_w = reg_logistic_regression(
-        y, tx, w_initial, max_iters, gamma)
+    rlr_loss, rlr_w = reg_logistic_regression(y, tx,lambda_, w_initial, max_iters, gamma)
 
     print(">>>Reg Logistic Regression (it: " + str(max_iters) + ", g: " + str(gamma) +  ")")
     print("Loss:", rlr_loss)
@@ -102,4 +102,4 @@ sgd()
 ls()
 #rr()
 lr()
-#lrl()
+rlr()
