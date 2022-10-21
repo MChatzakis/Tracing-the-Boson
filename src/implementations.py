@@ -87,7 +87,7 @@ def least_squares(y, tx):
     w = np.linalg.solve(tx.T @ tx, tx.T) @ y
     mse = 1./(2*N)*((y-tx @ w).T @ (y-tx @ w))
 
-    return [w, mse]
+    return w, mse
 
 
 def ridge_regression(y, tx, lambda_):
@@ -134,7 +134,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         # get loss and update w.
         loss, w = gradient_descent_logistic(y, tx, w, gamma)
 
-    return loss, w
+    return w, loss
 
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma_):
@@ -157,4 +157,4 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma_):
         # get loss and update w.
         loss, w = reg_gradient_descent_logistic(y, tx, lambda_, w, gamma_)
 
-    return loss, w
+    return w, loss
