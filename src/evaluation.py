@@ -113,14 +113,11 @@ def rlr():
 
 def evaluate_test_data(test_data_X, weights,ids):
     
-    predicted_y = test_data_X.dot(weights)
+    predicted_y = sigmoid(test_data_X.dot(weights))
     
     print(predicted_y[0:30])
     
-    labels_y = np.ones(len(predicted_y))
-    for i in range(len(predicted_y)):
-        if predicted_y[i] < 0.5:
-            labels_y[i] = -1
+    labels_y = np.sign(predicted_y-0.5)
     
     create_csv_submission(ids, labels_y, "LogisticRegression.csv")
     
