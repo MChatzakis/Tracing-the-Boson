@@ -87,28 +87,31 @@ def least_squares(y, tx):
     w = np.linalg.solve(tx.T @ tx, tx.T) @ y
     mse = 1./(2*N)*((y-tx @ w).T @ (y-tx @ w))
 
-    return [w, mse]
+    return w, mse
 
 
 def ridge_regression(y, tx, lambda_):
     """implement ridge regression.
-
+    
     Args:
         y: numpy array of shape (N,), N is the number of samples.
         tx: numpy array of shape (N,D), D is the number of features.
         lambda_: scalar.
-
+    
     Returns:
         w: optimal weights, numpy array of shape(D,), D is the number of features.
-
+        mse: scalar
     >>> ridge_regression(np.array([0.1,0.2]), np.array([[2.3, 3.2], [1., 0.1]]), 0)
     array([ 0.21212121, -0.12121212])
     >>> ridge_regression(np.array([0.1,0.2]), np.array([[2.3, 3.2], [1., 0.1]]), 1)
     array([0.03947092, 0.00319628])
     """
-    w = np.linalg.solve(tx.T.dot(tx) + lambda_*2 *
-                        tx.shape[0]*np.identity(tx.shape[1]), tx.T.dot(y))
-    return w
+    w = np.linalg.solve(tx.T.dot(tx) + lambda_*2*tx.shape[0]*np.identity(tx.shape[1]), tx.T.dot(y))
+    error = y - tx.dot(w)
+    mse = 1/(2*y.shape[0])*np.transpose(error).dot(error)
+    
+    return w, mse
+
 
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
@@ -131,7 +134,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         # get loss and update w.
         loss, w = gradient_descent_logistic(y, tx, w, gamma)
 
-    return loss, w
+    return w, loss
 
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma_):
@@ -154,4 +157,4 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma_):
         # get loss and update w.
         loss, w = reg_gradient_descent_logistic(y, tx, lambda_, w, gamma_)
 
-    return loss, w
+    return w, loss

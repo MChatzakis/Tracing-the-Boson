@@ -5,6 +5,7 @@ from implementations import *
 
 DATASET_PATH = "../dataset/train.csv"
 TEST_PATH = "../dataset/test.csv"
+TEST_RESULTS_PATH = "../test_results/"
 
 yb, input_data, train_ids = load_csv_data(DATASET_PATH, False)
 
@@ -111,7 +112,7 @@ def rlr():
     return
 
 
-def evaluate_test_data(test_data_X, weights,ids):
+def evaluate_test_data(test_data_X, weights, ids):
     
     predicted_y = sigmoid(test_data_X.dot(weights))
     
