@@ -63,3 +63,42 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         end_index = min((batch_num + 1) * batch_size, data_size)
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
+
+def standardize(x):
+    """Standardize the original data set."""
+    mean = np.mean(x, axis=0)
+    std = np.std(x, axis=0)
+    return (x - mean) / std
+
+def compute_accuracy(y, y_predicted,threshold):
+    """
+    Computes the fraction of correctly classified points
+    :param y: array of shape (n, )
+    :param y_predicted: array of shape (n, )
+    :param threshold: classification threshold for predicted values
+    :return: scalar
+    """
+    labels = [1 if i > threshold else 0 for i in y_predicted]
+    num_correct_objects = np.sum(y == labels)
+
+    return num_correct_objects / y.shape[0]
+
+def add_cross_features(x): 
+    for f1 in range(x.shape[1]):
+        for f2 in range(f1 + 1):
+            x = np.hstack([x, x[:, [f1]] * x[:, [f2]]])
+
+    return x
+
+def one_hot_encoding(x):
+    encoded = np.zeros(((x.shape[0],4)))
+    for i in range(4):
+        encoded[:,i] = (x[:,17] == i)
+    x = np.delete(x,17,1)
+    x = np.hstack((x,encoded))
+    return x
+
+def log_transform(x):
+    for i in range(x.shape[1]):
+        x[:,i] = np.log(1+x[:,i] - np.min(x[:,i]))
+    return x
