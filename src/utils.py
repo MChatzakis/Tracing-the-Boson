@@ -375,26 +375,43 @@ def split_data_k_fold(x, y, k_fold, k, seed):
 
     return x_te, x_tr, y_te, y_tr
 
+def linear_prediction(x,w):
+    return x.dot(w)
 
-def cross_validation_step(x, y, k_fold, k, seed, function, loss_function, *args):
-    x_te, x_tr, y_te, y_tr = split_data_k_fold(x, y, k_fold, k, seed)
-    w, loss_tr = function(y_tr, x_tr, *args)
-    loss_te = loss_function(y_te, x_te, w)
+def sigmoid_prediction(x,w):
+    return sigmoid(x.dot(w))
 
-    return loss_tr, loss_te
+def cross_validation_step(x,y, k_fold, k, seed,function, prediction_function,*args):
+    x_te, x_tr, y_te, y_tr = split_data_k_fold(x,y, k_fold, k, seed)
+    w, _  = function(y_tr, x_tr, *args)
+    acc_te = compute_accuracy(y_te,prediction_function(x_te, w),0.5)
+    acc_tr = compute_accuracy(y_tr, prediction_function(x_tr,w),0.5)
+    return acc_tr, acc_te
+
+def cross_validation(x,y, k_fold, seed,function, prediction_function,*args):
+    """sample tests:
+
+    cross_validation(tx,y, 4, 1,mean_squared_error_gd, linear_prediction,np.zeros(tx.shape[1]),100,0.001)
+    cross_validation(tx,y, 4, 1,mean_squared_error_sgd, linear_prediction,np.zeros(tx.shape[1]),100,0.001)
+    cross_validation(tx,y, 4, 1,least_squares, linear_prediction)
+    cross_validation(tx,y, 4, 1,ridge_regression, linear_prediction,0.001)
+    cross_validation(tx,y, 4, 1,logistic_regression, sigmoid_prediction,np.zeros(tx.shape[1]),100,0.001)
+    cross_validation(tx,y, 4, 1,reg_logistic_regression, sigmoid_prediction,0.0001,np.zeros(tx.shape[1]),100,0.001)
+    
+    returns (test_accuracy,training_accuracy)
+    
+    """
 
 
-def cross_validation(x, y, k_fold, seed, function, loss_function, *args):
-    losses_tr = []
-    losses_te = []
+    accs_tr = []
+    accs_te = []
     for k in range(k_fold):
-        k_loss_tr, k_loss_te = cross_validation_step(
-            x, y, k_fold, k, seed, function, loss_function, *args)
-        losses_tr.append(k_loss_tr)
-        losses_te.append(k_loss_te)
-    loss_tr = np.mean(losses_tr)
-    loss_te = np.mean(losses_te)
-    return loss_te, loss_tr
+        k_acc_tr,k_acc_te = cross_validation_step(x,y, k_fold, k, seed,function, prediction_function,*args)
+        accs_tr.append(k_acc_tr)
+        accs_te.append(k_acc_te)
+    acc_tr = np.mean(accs_tr)
+    acc_te = np.mean(accs_te) 
+    return acc_te, acc_tr   
 
 
 def split_data(x, y, ratio, seed=1):
