@@ -1,3 +1,14 @@
+"""
+-----------------
+implementations.py
+Contains the implementations of regression models
+
+cs433-ML Project 1, EPFL
+Ioannis Bantzis, Manos Chatzakis, Maxence Hofer
+-----------------
+"""
+
+
 import numpy as np
 
 from cmath import inf
@@ -28,9 +39,6 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
         loss = compute_loss(y, tx, w)
 
         w = w - gamma * gradient
-
-        #print("GD Epoch. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(
-        #    bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
 
     return w, loss
 
@@ -92,12 +100,12 @@ def least_squares(y, tx):
 
 def ridge_regression(y, tx, lambda_):
     """implement ridge regression.
-    
+
     Args:
         y: numpy array of shape (N,), N is the number of samples.
         tx: numpy array of shape (N,D), D is the number of features.
         lambda_: scalar.
-    
+
     Returns:
         w: optimal weights, numpy array of shape(D,), D is the number of features.
         mse: scalar
@@ -106,12 +114,12 @@ def ridge_regression(y, tx, lambda_):
     >>> ridge_regression(np.array([0.1,0.2]), np.array([[2.3, 3.2], [1., 0.1]]), 1)
     array([0.03947092, 0.00319628])
     """
-    w = np.linalg.solve(tx.T.dot(tx) + lambda_*2*tx.shape[0]*np.identity(tx.shape[1]), tx.T.dot(y))
+    w = np.linalg.solve(tx.T.dot(tx) + lambda_*2 *
+                        tx.shape[0]*np.identity(tx.shape[1]), tx.T.dot(y))
     error = y - tx.dot(w)
     mse = 1/(2*y.shape[0])*np.transpose(error).dot(error)
-    
-    return w, mse
 
+    return w, mse
 
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
@@ -127,7 +135,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         mse: scalar.
 
     """
-    losses = []
+    loss = -1
     w = initial_w
 
     for iter in range(max_iters):
@@ -140,18 +148,18 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma_):
     """Calculate the least squares solution.
        returns mse, and optimal weights.
-    
+
     Args:
         y: numpy array of shape (N,), N is the number of samples.
         tx: numpy array of shape (N,D), D is the number of features.
-    
+
     Returns:
         w: optimal weights, numpy array of shape(D,), D is the number of features.
         mse: scalar.
 
     """
-    
-    w=initial_w
+
+    w = initial_w
 
     for iter in range(max_iters):
         # get loss and update w.

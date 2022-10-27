@@ -1,4 +1,13 @@
-"""Some helper functions for project 1."""
+"""
+-----------------
+helpers.py
+Contains basic helper functions
+
+cs433-ML Project 1, EPFL
+Ioannis Bantzis, Manos Chatzakis, Maxence Hofer
+-----------------
+"""
+
 import csv
 import numpy as np
 
@@ -13,7 +22,7 @@ def load_csv_data(data_path, sub_sample=False):
 
     # convert class labels from strings to binary (-1,1)
     yb = np.ones(len(y))
-    yb[np.where(y == "b")] = 0#-1 !change
+    yb[np.where(y == "b")] = 0  # -1 !change
 
     # sub-sample
     if sub_sample:
@@ -64,13 +73,15 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
 
+
 def standardize(x):
     """Standardize the original data set."""
     mean = np.mean(x, axis=0)
     std = np.std(x, axis=0)
     return (x - mean) / std
 
-def compute_accuracy(y, y_predicted,threshold):
+
+def compute_accuracy(y, y_predicted, threshold):
     """
     Computes the fraction of correctly classified points
     :param y: array of shape (n, )
@@ -83,22 +94,25 @@ def compute_accuracy(y, y_predicted,threshold):
 
     return num_correct_objects / y.shape[0]
 
-def add_cross_features(x): 
+
+def add_cross_features(x):
     for f1 in range(x.shape[1]):
         for f2 in range(f1 + 1):
             x = np.hstack([x, x[:, [f1]] * x[:, [f2]]])
 
     return x
 
+
 def one_hot_encoding(x):
-    encoded = np.zeros(((x.shape[0],4)))
+    encoded = np.zeros(((x.shape[0], 4)))
     for i in range(4):
-        encoded[:,i] = (x[:,17] == i)
-    x = np.delete(x,17,1)
-    x = np.hstack((x,encoded))
+        encoded[:, i] = (x[:, 17] == i)
+    x = np.delete(x, 17, 1)
+    x = np.hstack((x, encoded))
     return x
+
 
 def log_transform(x):
     for i in range(x.shape[1]):
-        x[:,i] = np.log(1+x[:,i] - np.min(x[:,i]))
+        x[:, i] = np.log(1+x[:, i] - np.min(x[:, i]))
     return x
