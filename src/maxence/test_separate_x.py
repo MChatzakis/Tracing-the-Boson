@@ -28,15 +28,23 @@ n91: there are false values in 8 columns (1st: 7562/77544, other full false)
 n92: there are false values in 1 column (2952/50379 false)
 n93: there are false values in 1 column (1477/22164 false)
 '''
-tx0 = increase_degree(add_1_column(remove_false_column_and_average_first(x0)), 7)
-tx1 = increase_degree(add_1_column(remove_false_column_and_average_first(x1)), 7)
-tx2 = increase_degree(add_1_column(average_false_values(x2)), 9)
-tx3 = increase_degree(add_1_column(average_false_values(x3)), 9)
 
-lambda_ridge0=5e-2
-lambda_ridge1=3e-2
-lambda_ridge2=8e-2
-lambda_ridge3=1.5e-1
+
+d0=8
+d1=11
+d2=11
+d3=11
+
+
+tx0 = increase_degree(add_1_column(remove_false_column_and_average_first(x0)), d0)
+tx1 = increase_degree(add_1_column(remove_false_column_and_average_first(x1)), d1)
+tx2 = increase_degree(add_1_column(average_false_values(x2)), d2)
+tx3 = increase_degree(add_1_column(average_false_values(x3)), d3)
+
+lambda_ridge0=0.02
+lambda_ridge1=0.12285714
+lambda_ridge2=0.03285714
+lambda_ridge3=0.03285714
 
 w0 = ridge_regression(y0, tx0, lambda_ridge0)
 w1 = ridge_regression(y1, tx1, lambda_ridge1)
@@ -48,11 +56,11 @@ w3 = ridge_regression(y3, tx3, lambda_ridge3)
 #[loss2, w2] = least_squares(y2, tx2)
 #[loss3, w3] = least_squares(y3, tx3)
 
-max_iters=100
-w00=np.zeros(len(tx0[0, :]))
-w01=np.zeros(len(tx1[0, :]))
-w02=np.zeros(len(tx2[0, :]))
-w03=np.zeros(len(tx3[0, :]))
+#max_iters=100
+#w00=np.zeros(len(tx0[0, :]))
+#w01=np.zeros(len(tx1[0, :]))
+#w02=np.zeros(len(tx2[0, :]))
+#w03=np.zeros(len(tx3[0, :]))
 #print(len(w00), len(w01), len(w02), len(w03))
 lambda_log=1e-1
 gamma_log0=8e-5
@@ -73,15 +81,19 @@ print("3done")
 
 ycal0=np.sign(tx0 @ w0-0.5)
 n0=len(y0)
+r0=(n0-np.count_nonzero(ycal0-(2*y0-1)))/n0
 print((n0-np.count_nonzero(ycal0-(2*y0-1)))/n0)
 ycal1=np.sign(tx1 @ w1-0.5)
 n1=len(y1)
+r1=(n1-np.count_nonzero(ycal1-(2*y1-1)))/n1
 print((n1-np.count_nonzero(ycal1-(2*y1-1)))/n1)
 ycal2=np.sign(tx2 @ w2-0.5)
 n2=len(y2)
+r2=(n2-np.count_nonzero(ycal2-(2*y2-1)))/n2
 print((n2-np.count_nonzero(ycal2-(2*y2-1)))/n2)
 ycal3=np.sign(tx3 @ w3-0.5)
 n3=len(y3)
+r3=(n3-np.count_nonzero(ycal3-(2*y3-1)))/n3
 print((n3-np.count_nonzero(ycal3-(2*y3-1)))/n3)
 
 y_fin=unit_4(ycal0, i0, ycal1, i1, ycal2, i2, ycal3, i3)
@@ -91,17 +103,20 @@ print((nfin-np.count_nonzero(y_fin-(2*y-1)))/nfin)
 
 data_path_test="C:\\Users\\maxen\\Documents\\Master EPFL\\MA1\\Machine learning\\project1\\data\\test.csv"
 
-'''
+
 _, test_data, test_ids  = load_csv_data(data_path_test, False)
 
 idt=np.arange(len(test_data[:, 0]))
 
 [x0t, id0, x1t, id1, x2t, id2, x3t, id3]= separate_4(idt, test_data)
 
-tx0t = increase_degree(add_1_column(remove_false_column_and_average_first(x0t)), 9)
-tx1t = increase_degree(add_1_column(remove_false_column_and_average_first(x1t)), 9)
-tx2t = increase_degree(add_1_column(average_false_values(x2t)), 7)
-tx3t = increase_degree(add_1_column(average_false_values(x3t)), 7)
+
+
+
+tx0t = increase_degree(add_1_column(remove_false_column_and_average_first(x0t)), d0)
+tx1t = increase_degree(add_1_column(remove_false_column_and_average_first(x1t)), d1)
+tx2t = increase_degree(add_1_column(average_false_values(x2t)), d2)
+tx3t = increase_degree(add_1_column(average_false_values(x3t)), d3)
 
 ly0 = np.sign(tx0t @ w0 - 0.5)
 ly1 = np.sign(tx1t @ w1 - 0.5)
@@ -115,4 +130,3 @@ print(np.shape(labels_y), np.shape(test_ids))
 create_csv_submission(test_ids, labels_y, "C:\\Users\\maxen\\Documents\\Master EPFL\\MA1\\Machine learning\\project1\\LogisticRegression.csv")
 
 
-'''
