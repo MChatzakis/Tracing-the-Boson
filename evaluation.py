@@ -1,3 +1,19 @@
+"""
+-----------------
+evaluation.py
+Evaluation script to tune parameters through cross validation.
+
+Example:
+$ python3 evaluation.py gd 
+
+For usage help:
+$ python3 evaluation.py usage
+
+cs433-ML Project 1, EPFL
+Ioannis Bantzis, Manos Chatzakis, Maxence Hofer
+-----------------
+"""
+
 from cgi import test
 
 import numpy as np
@@ -16,6 +32,7 @@ K_FOLDS = 5
 SEED = 42
 
 KEEP_ALL_RESULTS = False
+VERBOSE = True
 
 yb, input_data, train_ids = load_csv_data(DATASET_PATH, False)
 
@@ -315,7 +332,7 @@ function_options = {
 
 
 def main():
-    
+
     function_name = sys.argv[1]
 
     if (function_name == ""):
@@ -325,9 +342,9 @@ def main():
     start = time.time()
     function_options[function_name]()  # first step of becoming a hacker
     end = time.time()
-    
+
     print("Total time elapsed (seconds):", end - start)
-    
+
     return
 
 
