@@ -56,7 +56,7 @@ def gd():
     features_num = tx.shape[1]
     w_initial = np.zeros(features_num)
 
-    total_gammas = 10000
+    total_gammas = 100
     iters = [100]
 
     gammas = np.linspace(0.000000001, 0.0001, total_gammas)
