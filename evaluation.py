@@ -30,36 +30,31 @@ TEST_RESULTS_PATH = "./test_results/"
 
 K_FOLDS = 5
 SEED = 42
+EXPANSION_DEGREE = 4
 
 KEEP_ALL_RESULTS = False
-VERBOSE = True
+VERBOSE = False
 
 yb, input_data, train_ids = load_csv_data(DATASET_PATH, False)
 
 y = yb
+#tx = increase_degree(add_1_column(remove_false_columns(input_data)),EXPANSION_DEGREE)
 tx = add_1_column(remove_false_columns(input_data))
 
 
 def gd():
-    # Old code
-    #max_iters = 100
-    #gamma = 0.0000003
-    #gd_w, gd_loss = mean_squared_error_gd(y, tx, w_initial, max_iters, gamma)
-
-    #print(">>>Gradient Descent (it: " + str(max_iters) + ", g: " + str(gamma) + ")")
-    #print("Loss:", gd_loss)
-    #print("Weights:", gd_w)
-    # print()
 
     print("Evaluating Gradient Descent")
 
     features_num = tx.shape[1]
     w_initial = np.zeros(features_num)
 
-    total_gammas = 100
     iters = [100]
 
-    gammas = np.linspace(0.000000001, 0.0001, total_gammas)
+    total_gammas = 10
+    #gammas = np.linspace(0.000000001, 0.00000001, total_gammas) #best 1e-08
+    gammas = [1e-08]
+    print("Gammas to test:", gammas)
 
     results = []
     best_result = []
@@ -71,46 +66,28 @@ def gd():
                 tx, y, K_FOLDS, SEED, mean_squared_error_gd, linear_prediction, w_initial, iter, step_size)
 
             c_res = [iter, step_size, test_acc, train_acc]
-            print(c_res)
+        
+            best_acc, best_result = improvement_action(test_acc, best_acc, c_res, best_result, results)
 
-            if (test_acc > best_acc):
-                best_acc = test_acc
-                best_result = c_res
-
-            if (KEEP_ALL_RESULTS):
-                results.append(c_res)
-
-    print("GD best result=[iter,gamma,test_acc,train_acc]=", best_result)
+    print("\n>>>GD best result=[iter,gamma,test_acc,train_acc]=", best_result)
 
     return
 
 
 def sgd():
 
-    #max_iters = 100
-    #gamma = 0.000000005
-    #features_num = tx.shape[1]
-    #w_initial = np.zeros(features_num)
-
-    # sgd_w, sgd_loss = mean_squared_error_sgd(
-    #    y, tx, w_initial, max_iters, gamma)
-
-    # print(">>>Stochastic Gradient Descent (it: " +
-    #      str(max_iters) + ", g: " + str(gamma) + ")")
-    #print("Loss:", sgd_loss)
-    #print("Weights:", sgd_w)
-    # print()
-
     print("Evaluating Stochastic Gradient Descent")
 
     features_num = tx.shape[1]
     w_initial = np.zeros(features_num)
 
-    total_gammas = 10000
+    total_gammas = 10
     iters = [100]
 
-    gammas = np.linspace(0.000000001, 0.0000001, total_gammas)
-
+    gammas = np.linspace(0.000000001, 0.00000001, total_gammas)
+    #gammas = [1e-08]
+    print("Gammas to test:", gammas)
+    
     results = []
     best_result = []
     best_acc = -1
@@ -121,51 +98,34 @@ def sgd():
                                                    linear_prediction, w_initial, iter, step_size)
 
             c_res = [iter, step_size, test_acc, train_acc]
-            print(c_res)
 
-            if (test_acc > best_acc):
-                best_acc = test_acc
-                best_result = c_res
+            best_acc, best_result = improvement_action(test_acc, best_acc, c_res, best_result, results)
 
-            if (KEEP_ALL_RESULTS):
-                results.append(c_res)
-
-    print("SGD best result=[iter,gamma,test_acc,train_acc]=", best_result)
+    print("\n>>>SGD best result=[iter,gamma,test_acc,train_acc]=", best_result)
 
     return
 
 
 def ls():
-    #ls_w, ls_loss = least_squares(y, tx)
-
-    #print(">>>Least Squares")
-    #print("Loss:", ls_loss)
-    #print("Weights:", ls_w)
-    # print()
-
-    #_, test_data, test_ids = load_csv_data(TEST_PATH, False)
-    #test_data = add_1_column(remove_false_columns(test_data))
-    #evaluate_test_data(test_data, ls_w, test_ids)
 
     print("Evaluating Least Squares")
 
     test_acc, train_acc = cross_validation(
-        tx, y, K_FOLDS, SEED, least_squares, linear_prediction)
+        add_1_column(remove_false_columns(input_data)), y, K_FOLDS, SEED, least_squares, linear_prediction)
 
-    print("LS best result=[test_acc,train_acc]=", test_acc, train_acc)
+    print("\n>>>LS best result=[test_acc,train_acc]=", test_acc, train_acc)
 
     return
 
 
 def rr():
-    #lambda_ = 0
-    #rr_w, rr_loss = ridge_regression(y, tx, lambda_)
-    # print(rr_loss)
+
     print("Evaluating Ridge Reggresion")
 
-    total_lambdas = 1000
-    lambdas = np.linspace(0.00001, 0.001, total_lambdas)
-
+    total_lambdas = 10
+    lambdas = np.linspace(0.00001, 0.001, total_lambdas) #0.000560000000000000
+    print("Lambdas to test:",lambdas)
+    #lambdas = [0.000560000000000000]
     results = []
     best_result = []
     best_acc = -1
@@ -173,45 +133,28 @@ def rr():
     for lambda_ in lambdas:
         test_acc, train_acc = cross_validation(
             tx, y, K_FOLDS, SEED, ridge_regression, linear_prediction, lambda_)
+        
         c_res = [lambda_, test_acc, train_acc]
-        print(c_res)
 
-        if (test_acc > best_acc):
-            best_acc = test_acc
-            best_result = c_res
+        best_acc, best_result = improvement_action(test_acc, best_acc, c_res, best_result, results)
 
-        results.append(c_res)
-
-    print("RR best result=[lambda,test_acc,train_acc]=", best_result)
+    print("\n>>>RR best result=[lambda,test_acc,train_acc]=", best_result)
     return
 
 
 def lr():
-    #max_iters = 100
-    #gamma = 0.000001
-    #features_num = tx.shape[1]
-    #w_initial = np.zeros(features_num)
-    #lr_loss, lr_w = logistic_regression(y, tx, w_initial, max_iters, gamma)
-
-    # print(">>>Logistic Regression (it: " +
-    #      str(max_iters) + ", g: " + str(gamma) + ")")
-    #print("Loss:", lr_loss)
-    #print("Weights:", lr_w)
-    # print()
-
-    #_, test_data, test_ids = load_csv_data(TEST_PATH, False)
-    #test_data = add_1_column(remove_false_columns(test_data))
-    #evaluate_test_data(test_data, lr_w, test_ids)
 
     print("Evaluating Logistic Regression")
 
     features_num = tx.shape[1]
     w_initial = np.zeros(features_num)
 
-    total_gammas = 10000
+    total_gammas = 10
     iters = [100]
 
-    gammas = np.linspace(0.0000001, 0.00001, total_gammas)
+    gammas = np.linspace(0.0001, 0.001, total_gammas)
+    #gammas = [0.001]
+    print("Gammas to test", gammas)
 
     results = []
     best_result = []
@@ -223,14 +166,9 @@ def lr():
                 tx, y, K_FOLDS, SEED, logistic_regression, sigmoid_prediction, w_initial, iter, step_size)
 
             c_res = [iter, step_size, test_acc, train_acc]
-            print(c_res)
+            
+            best_acc, best_result = improvement_action(test_acc, best_acc, c_res, best_result, results)
 
-            if (test_acc > best_acc):
-                best_acc = test_acc
-                best_result = c_res
-
-            if (KEEP_ALL_RESULTS):
-                results.append(c_res)
 
     print("LR best result=[iter,gamma,test_acc,train_acc]=", best_result)
 
@@ -321,6 +259,23 @@ def usage():
     return
 
 
+def improvement_action(test_acc, best_acc, c_res, best_result, results):
+    
+    if VERBOSE == True:
+        print(c_res)
+    
+    if (test_acc > best_acc):
+        best_acc = test_acc
+        best_result = c_res
+        print("Found better accuracy: ", best_result)
+            
+    #if (KEEP_ALL_RESULTS):
+    #    results.append(c_res)
+    
+    return best_acc, best_result
+    
+
+
 # dispatch table ;)
 function_options = {
     "gd": gd,
@@ -345,7 +300,7 @@ def main():
     function_options[function_name]()  # first step of becoming a hacker
     end = time.time()
 
-    print("Total time elapsed (seconds):", end - start)
+    print(">>>Train time elapsed (seconds):", end - start)
 
     return
 

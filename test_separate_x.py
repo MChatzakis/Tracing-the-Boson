@@ -37,6 +37,7 @@ d3=11
 
 
 tx0 = increase_degree(add_1_column(remove_false_column_and_average_first(x0)), d0)
+#add_1_column(remove_false_columns(input_data))
 tx1 = increase_degree(add_1_column(remove_false_column_and_average_first(x1)), d1)
 tx2 = increase_degree(add_1_column(average_false_values(x2)), d2)
 tx3 = increase_degree(add_1_column(average_false_values(x3)), d3)
