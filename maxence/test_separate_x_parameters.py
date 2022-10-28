@@ -49,37 +49,10 @@ for d in deg:
         lambda_ridge2=8e-2
         lambda_ridge3=1.5e-1
 
-        w0 = ridge_regression(y0, tx0, l)
-        w1 = ridge_regression(y1, tx1, l)
-        w2 = ridge_regression(y2, tx2, l)
-        w3 = ridge_regression(y3, tx3, l)
-
-        #[loss0, w0] = least_squares(y0, tx0)
-        #[loss1, w1] = least_squares(y1, tx1)
-        #[loss2, w2] = least_squares(y2, tx2)
-        #[loss3, w3] = least_squares(y3, tx3)
-
-        #max_iters=100
-        #w00=np.zeros(len(tx0[0, :]))
-        #w01=np.zeros(len(tx1[0, :]))
-        #w02=np.zeros(len(tx2[0, :]))
-        #w03=np.zeros(len(tx3[0, :]))
-        #print(len(w00), len(w01), len(w02), len(w03))
-        lambda_log=1e-1
-        gamma_log0=8e-5
-        gamma_log1=8e-5
-        gamma_log2=8e-5
-        gamma_log3=8e-4
-        '''
-        [loss0, w0] = reg_logistic_regression(y0, tx0, lambda_log, w00, max_iters, gamma_log0)
-        print("0done")
-        [loss1, w1] = reg_logistic_regression(y1, tx1, lambda_log, w01, max_iters, gamma_log1)
-        print("1done")
-        [loss2, w2] = reg_logistic_regression(y2, tx2, lambda_log, w02, max_iters, gamma_log2)
-        print("2done")
-        [loss2, w3] = reg_logistic_regression(y3, tx3, lambda_log, w03, max_iters, gamma_log3)
-        print("3done")
-        '''
+        [w0, loss0] = ridge_regression(y0, tx0, l)
+        [w1, loss1] = ridge_regression(y1, tx1, l)
+        [w2, loss2] = ridge_regression(y2, tx2, l)
+        [w3, loss3] = ridge_regression(y3, tx3, l)
 
 
         ycal0=np.sign(tx0 @ w0-0.5)
@@ -120,30 +93,3 @@ for d in deg:
         #print((nfin-np.count_nonzero(y_fin-(2*y-1)))/nfin)
 print(best_results, best_lambda, best_degree)
 
-data_path_test="C:\\Users\\maxen\\Documents\\Master EPFL\\MA1\\Machine learning\\project1\\data\\test.csv"
-'''
-
-_, test_data, test_ids  = load_csv_data(data_path_test, False)
-
-idt=np.arange(len(test_data[:, 0]))
-
-[x0t, id0, x1t, id1, x2t, id2, x3t, id3]= separate_4(idt, test_data)
-
-tx0t = standardize(increase_degree(add_1_column(remove_false_column_and_average_first(x0t)), 7))
-tx1t = standardize(increase_degree(add_1_column(remove_false_column_and_average_first(x1t)), 7))
-tx2t = standardize(increase_degree(add_1_column(average_false_values(x2t)), 9))
-tx3t = standardize(increase_degree(add_1_column(average_false_values(x3t)), 9))
-
-ly0 = np.sign(tx0t @ w0 - 0.5)
-ly1 = np.sign(tx1t @ w1 - 0.5)
-ly2 = np.sign(tx2t @ w2 - 0.5)
-ly3 = np.sign(tx3t @ w3 - 0.5)
-
-labels_y=unit_4(ly0, id0, ly1, id1, ly2, id2, ly3, id3)
-
-print((len(id0)+len(id1)+len(id2)+len(id3)))
-print(np.shape(labels_y), np.shape(test_ids))
-create_csv_submission(test_ids, labels_y, "C:\\Users\\maxen\\Documents\\Master EPFL\\MA1\\Machine learning\\project1\\LogisticRegression.csv")
-
-
-'''
