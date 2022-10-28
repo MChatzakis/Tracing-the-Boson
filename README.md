@@ -14,15 +14,16 @@ This repository consists of the following files:
     ```
 * evaluation.py: Script for evaluating the regressions models through cross validation.
     * Example Usage:
-    ```console 
+    ```shell 
     python3 evaluation.py gd #cross validation for mean square gradient descent
     ```
     * To see detailed usage examples:
-    ```console 
+    ```shell 
     python3 evaluation.py usage #prints a helping prompt
     ```
 * report.pdf: A two-page report about this work.
 * README.md: This readme.
+* .gitignore: A basic gitignore file for python projects. It ignores /dataset/ names directories, in order to be able to store the dataset locally at our root directory.
 
 ## Dataset
 We use the CERN particle signature dataset, available at <https://www.aicrowd.com/challenges/epfl-machine-learning-higgs>
