@@ -1,6 +1,9 @@
 from cgi import test
+
 import numpy as np
+
 import sys
+import time
 
 from helpers import *
 from implementations import *
@@ -37,7 +40,7 @@ def gd():
     w_initial = np.zeros(features_num)
 
     total_gammas = 10000
-    iters = [50, 100]
+    iters = [100]
 
     gammas = np.linspace(0.000000001, 0.0001, total_gammas)
 
@@ -87,7 +90,7 @@ def sgd():
     w_initial = np.zeros(features_num)
 
     total_gammas = 10000
-    iters = [50, 100]
+    iters = [100]
 
     gammas = np.linspace(0.000000001, 0.0000001, total_gammas)
 
@@ -189,7 +192,7 @@ def lr():
     w_initial = np.zeros(features_num)
 
     total_gammas = 10000
-    iters = [50, 100, 150, 200]
+    iters = [100]
 
     gammas = np.linspace(0.0000001, 0.00001, total_gammas)
 
@@ -240,7 +243,7 @@ def rlr():
     total_gammas = 10000
     total_lambdas = 100
 
-    iters = [50, 100, 150, 200]
+    iters = [100]
 
     lambdas = np.linspace(0.000001, 0.0001, total_lambdas)
     gammas = np.linspace(0.0000001, 0.00001, total_gammas)
@@ -312,13 +315,18 @@ function_options = {
 
 
 def main():
+    
     function_name = sys.argv[1]
 
     if (function_name == ""):
         print("Define a function to run.")
         sys.exit(-1)
 
+    start = time.time()
     function_options[function_name]()  # first step of becoming a hacker
+    end = time.time()
+    
+    print("Total time elapsed (seconds):", end - start)
     
     return
 
