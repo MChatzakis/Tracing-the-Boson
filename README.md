@@ -9,7 +9,7 @@ This repository consists of the following files:
 * utils.py: Utility functions, implemented to aid the implementation of the models
 * run.py: Script reproducing the .csv file of our best results, for Aicrowd competition.
     * Usage:
-    ```console 
+    ```shell 
     python3 run.py
     ```
 * evaluation.py: Script for evaluating the regressions models through cross validation.
