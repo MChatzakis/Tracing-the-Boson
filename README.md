@@ -22,8 +22,8 @@ This repository consists of the following files:
     python3 evaluation.py usage #prints a helping prompt
     ```
 * report.pdf: A two-page report about this work.
-* README.md: This readme.
 * .gitignore: A basic gitignore file for python projects. It ignores /dataset/ names directories, in order to be able to store the dataset locally at our root directory.
+* README.md: This readme.
 
 ## Dataset
 We use the CERN particle signature dataset, available at <https://www.aicrowd.com/challenges/epfl-machine-learning-higgs>

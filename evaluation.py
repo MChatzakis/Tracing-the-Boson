@@ -24,9 +24,9 @@ import time
 from helpers import *
 from implementations import *
 
-DATASET_PATH = "../dataset/train.csv"
-TEST_PATH = "../dataset/test.csv"
-TEST_RESULTS_PATH = "../test_results/"
+DATASET_PATH = "./dataset/train.csv"
+TEST_PATH = "./dataset/test.csv"
+TEST_RESULTS_PATH = "./test_results/"
 
 K_FOLDS = 5
 SEED = 42
