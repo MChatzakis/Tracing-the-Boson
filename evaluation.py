@@ -316,6 +316,8 @@ def usage():
 
     print("\nExample: python3 evalution.py gd")
 
+    print("\nTo change the tuning range and other factors, you need to modify the script directly")
+
     return
 
 
