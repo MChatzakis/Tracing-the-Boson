@@ -13,6 +13,7 @@ import numpy as np
 from utils import *
 from helpers import *
 
+import black
 
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """The Gradient Descent (GD) algorithm.
