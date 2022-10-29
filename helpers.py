@@ -14,8 +14,7 @@ import numpy as np
 
 def load_csv_data(data_path, sub_sample=False):
     """Loads data and returns y (class labels), tX (features) and ids (event ids)"""
-    y = np.genfromtxt(data_path, delimiter=",",
-                      skip_header=1, dtype=str, usecols=1)
+    y = np.genfromtxt(data_path, delimiter=",", skip_header=1, dtype=str, usecols=1)
     x = np.genfromtxt(data_path, delimiter=",", skip_header=1)
     ids = x[:, 0].astype(np.int)
     input_data = x[:, 2:]
@@ -106,7 +105,7 @@ def add_cross_features(x):
 def one_hot_encoding(x):
     encoded = np.zeros(((x.shape[0], 4)))
     for i in range(4):
-        encoded[:, i] = (x[:, 17] == i)
+        encoded[:, i] = x[:, 17] == i
     x = np.delete(x, 17, 1)
     x = np.hstack((x, encoded))
     return x
@@ -114,5 +113,5 @@ def one_hot_encoding(x):
 
 def log_transform(x):
     for i in range(x.shape[1]):
-        x[:, i] = np.log(1+x[:, i] - np.min(x[:, i]))
+        x[:, i] = np.log(1 + x[:, i] - np.min(x[:, i]))
     return x

@@ -15,6 +15,7 @@ from helpers import *
 
 import black
 
+
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """The Gradient Descent (GD) algorithm.
 
@@ -32,10 +33,10 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
 
     w = initial_w
     loss = compute_loss(y, tx, w)
-    
+
     for n_iter in range(max_iters):
         gradient = compute_gradient(y, tx, w)
-        
+
         w = w - gamma * gradient
         loss = compute_loss(y, tx, w)
 
@@ -59,23 +60,25 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
     batch_size = 1
     w = initial_w
     loss = compute_loss(y, tx, w)
-    
+
     for n_iter in range(max_iters):
         # since batch size is 1 might need to change dat
-        for y_batch, tx_batch in batch_iter(y, tx, batch_size=batch_size, num_batches=1):
+        for y_batch, tx_batch in batch_iter(
+            y, tx, batch_size=batch_size, num_batches=1
+        ):
             gradient = compute_gradient(y_batch, tx_batch, w)
 
             w = w - gamma * gradient
 
             loss = compute_loss(y, tx, w)
 
-        #print("SGD iter. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
+        # print("SGD iter. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
 
     return w, loss
 
 
 def least_squares(y, tx):
-    """ The Least Squares Algorith (LS).
+    """The Least Squares Algorith (LS).
 
     Args:
         y: numpy array of shape (N,), N is the number of samples.
@@ -90,16 +93,16 @@ def least_squares(y, tx):
 
     [N, D] = np.shape(tx)
     w = np.zeros(D)
-    
+
     w = np.linalg.solve(tx.T @ tx, tx.T) @ y
-    #mse = 1./(2*N)*((y-tx @ w).T @ (y-tx @ w))
-    mse = compute_loss(y,tx,w)
-    
+    # mse = 1./(2*N)*((y-tx @ w).T @ (y-tx @ w))
+    mse = compute_loss(y, tx, w)
+
     return w, mse
 
 
 def ridge_regression(y, tx, lambda_):
-    """ The Ridge Regression Algorithm (RR).
+    """The Ridge Regression Algorithm (RR).
 
     Args:
         y: numpy array of shape (N,), N is the number of samples.
@@ -115,17 +118,18 @@ def ridge_regression(y, tx, lambda_):
     >>> ridge_regression(np.array([0.1,0.2]), np.array([[2.3, 3.2], [1., 0.1]]), 1)
     array([0.03947092, 0.00319628])
     """
-    w = np.linalg.solve(tx.T.dot(tx) + lambda_*2 *
-                        tx.shape[0]*np.identity(tx.shape[1]), tx.T.dot(y))
+    w = np.linalg.solve(
+        tx.T.dot(tx) + lambda_ * 2 * tx.shape[0] * np.identity(tx.shape[1]), tx.T.dot(y)
+    )
     error = y - tx.dot(w)
-    #mse = 1/(2*y.shape[0])*np.transpose(error).dot(error)
-    loss = compute_loss(y,tx,w)
-    
+    # mse = 1/(2*y.shape[0])*np.transpose(error).dot(error)
+    loss = compute_loss(y, tx, w)
+
     return w, loss
 
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
-    """The Logistic Regression Algorithm (LR). 
+    """The Logistic Regression Algorithm (LR).
 
     Args:
         y: numpy array of shape=(N, ).
@@ -150,7 +154,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
 
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma_):
-    """ The Regularized Logistic Regression Algorithm (LRL).
+    """The Regularized Logistic Regression Algorithm (LRL).
 
     Args:
         y: numpy array of shape=(N, ).
@@ -165,9 +169,11 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma_):
         loss: The logistic loss of the final computation [scalar].
 
     """
-    
+
     w = initial_w
-    loss = 1/y.shape[0]*np.sum(np.log(1+np.exp(tx @ w))-np.multiply(y,(tx @ w)))
+    loss = (
+        1 / y.shape[0] * np.sum(np.log(1 + np.exp(tx @ w)) - np.multiply(y, (tx @ w)))
+    )
 
     for iter in range(max_iters):
         # get loss and update w.

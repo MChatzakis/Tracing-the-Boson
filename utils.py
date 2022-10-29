@@ -32,7 +32,7 @@ def compute_loss(y, X, w):
     N = y.shape[0]
     e = y - X.dot(w)
 
-    mse = (np.linalg.norm(e)**2)/(2*N)
+    mse = (np.linalg.norm(e) ** 2) / (2 * N)
     return mse
 
 
@@ -50,7 +50,7 @@ def compute_gradient(y, X, w):
 
     XT = X.transpose()
 
-    gradient = -XT.dot(e)/N
+    gradient = -XT.dot(e) / N
     return gradient
 
 
@@ -61,7 +61,7 @@ def gradient_descent_logistic(y, X, w, gamma):
     Args:
         y:  shape=(N, 1)
         tx: shape=(N, D)
-        w:  shape=(D, 1) 
+        w:  shape=(D, 1)
         gamma: float
 
     Returns:
@@ -69,7 +69,7 @@ def gradient_descent_logistic(y, X, w, gamma):
         w: shape=(D, 1)
     """
 
-    w = w-gamma*compute_gradient_logistic(y, X, w)
+    w = w - gamma * compute_gradient_logistic(y, X, w)
     loss = compute_loss_logistic(y, X, w)
 
     return loss, w
@@ -81,14 +81,14 @@ def compute_loss_logistic(y, X, w):
     Args:
         y:  shape=(N, 1)
         tx: shape=(N, D)
-        w:  shape=(D, 1) 
+        w:  shape=(D, 1)
 
     Returns:
         a non-negative loss
     """
 
     [N, D] = np.shape(X)
-    return 1/N*np.sum(np.log(1+np.exp(X @ w))-np.multiply(y, (X @ w)))
+    return 1 / N * np.sum(np.log(1 + np.exp(X @ w)) - np.multiply(y, (X @ w)))
 
 
 def compute_gradient_logistic(y, X, w):
@@ -97,14 +97,14 @@ def compute_gradient_logistic(y, X, w):
     Args:
         y:  shape=(N, 1)
         X: shape=(N, D)
-        w:  shape=(D, 1) 
+        w:  shape=(D, 1)
 
     Returns:
         a vector of shape (D, 1)
     """
     [N, D] = np.shape(X)
     v1 = sigmoid(X @ w)
-    return 1/N*X.T @ (v1-y)
+    return 1 / N * X.T @ (v1 - y)
 
 
 def sigmoid(t):
@@ -122,7 +122,7 @@ def sigmoid(t):
     array([0.52497919, 0.52497919])
     """
     e = np.exp(t)
-    return np.divide(e, (1+e))
+    return np.divide(e, (1 + e))
 
 
 def reg_gradient_descent_logistic(y, tx, lambda_, w, gamma_):
@@ -132,32 +132,31 @@ def reg_gradient_descent_logistic(y, tx, lambda_, w, gamma_):
     Args:
         y:  shape=(N, 1)
         tx: shape=(N, D)
-        w:  shape=(D, 1) 
+        w:  shape=(D, 1)
         gamma: float
 
     Returns:
         loss: scalar number
         w: shape=(D, 1)
     """
-    #penalized start
+    # penalized start
     [N, D] = np.shape(tx)
-    
-    gradient = 1/N*tx.T @ (sigmoid(tx @ w)-y)+2*lambda_*w
-    w = w - gamma_*gradient
-    
-    loss = 1/N*np.sum(np.log(1+np.exp(tx @ w))-np.multiply(y,
-                      (tx @ w)))
-    
+
+    gradient = 1 / N * tx.T @ (sigmoid(tx @ w) - y) + 2 * lambda_ * w
+    w = w - gamma_ * gradient
+
+    loss = 1 / N * np.sum(np.log(1 + np.exp(tx @ w)) - np.multiply(y, (tx @ w)))
+
     return loss, w
 
 
 def penalized_logistic_regression(y, tx, w, lambda_):
-    #[N, D] = np.shape(tx)
-    #loss = 1/N*np.sum(np.log(1+np.exp(tx @ w))-np.multiply(y,
-                      #(tx @ w)))
-    #gradient = 1/N*tx.T @ (sigmoid(tx @ w)-y)+2*lambda_*w
+    # [N, D] = np.shape(tx)
+    # loss = 1/N*np.sum(np.log(1+np.exp(tx @ w))-np.multiply(y,
+    # (tx @ w)))
+    # gradient = 1/N*tx.T @ (sigmoid(tx @ w)-y)+2*lambda_*w
 
-    #return loss, gradient
+    # return loss, gradient
     return
 
 
@@ -169,14 +168,14 @@ Data Preprocessing and Handling function
 
 
 def remove_false_lines(y, x):
-    ''' this function take y and x and remove the data with the untaked measurement (-999.0)
+    """this function take y and x and remove the data with the untaked measurement (-999.0)
     Input: y: shape (n, )
            x: shape (n, d)
 
-    Return: ry: shape (nr, ) 
+    Return: ry: shape (nr, )
             rx: shape (nr, d) The data without lines containing -999
             n999: shape (1, d) The number of -999 per column
-    '''
+    """
 
     [n, d] = np.shape(x)
     n999 = np.zeros(d)
@@ -186,8 +185,8 @@ def remove_false_lines(y, x):
             index = np.vstack([index, i])
         else:
             for j in range(0, d):
-                if (x[i, j] == -999):
-                    n999[j] = n999[j]+1
+                if x[i, j] == -999:
+                    n999[j] = n999[j] + 1
 
     index = np.delete(index, 0)
 
@@ -197,11 +196,11 @@ def remove_false_lines(y, x):
 
 
 def remove_false_columns(x):
-    ''' this function take x and remove the data with the untaked measurement (-999.0)
+    """this function take x and remove the data with the untaked measurement (-999.0)
     Input: x: shape (n, d)
 
     Return: rx: shape (nr, d) The data without columns containing -999
-    '''
+    """
     [n, d] = np.shape(x)
     n999 = np.zeros(d)
     index = [-1]
@@ -216,32 +215,30 @@ def remove_false_columns(x):
 
 
 def add_1_column(x):
-    ''' Take a x vector and add a 1 column at the beginning for the w0 element
-    '''
+    """Take a x vector and add a 1 column at the beginning for the w0 element"""
     [n, d] = np.shape(x)
     v = np.ones([n, 1])
     return np.hstack((v, x))
 
 
 def separate_4(y, x):
-    ''' separate the x matrix and y vector in 4 matrices and 4 vectors according to the PRI_jet_num value
-    '''
+    """separate the x matrix and y vector in 4 matrices and 4 vectors according to the PRI_jet_num value"""
     [n, d] = np.shape(x)
     index0 = [-1]
     index1 = [-1]
     index2 = [-1]
     index3 = [-1]
     for i in range(n):
-        if (x[i, 22] == 0):
+        if x[i, 22] == 0:
             index0 = np.vstack([index0, i])
-        elif (x[i, 22] == 1):
+        elif x[i, 22] == 1:
             index1 = np.vstack([index1, i])
-        elif (x[i, 22] == 2):
+        elif x[i, 22] == 2:
             index2 = np.vstack([index2, i])
-        elif (x[i, 22] == 3):
+        elif x[i, 22] == 3:
             index3 = np.vstack([index3, i])
         else:
-            assert ("Error, value of PRI_jet was not in 0:3")
+            assert "Error, value of PRI_jet was not in 0:3"
 
     index0 = np.delete(index0, 0)
     index1 = np.delete(index1, 0)
@@ -261,7 +258,7 @@ def separate_4(y, x):
 
 
 def unit_4(y0, id0, y1, id1, y2, id2, y3, id3):
-    y = np.zeros((len(y0)+len(y1)+len(y2)+len(y3)))
+    y = np.zeros((len(y0) + len(y1) + len(y2) + len(y3)))
     y[id0] = y0[:]
     y[id1] = y1[:]
     y[id2] = y2[:]
@@ -295,10 +292,10 @@ def remove_false_column_and_average_first(x):
 
 
 def average_false_values(x):
-    ''' this function take x and remove the data with the untaked measurement (-999.0)
+    """this function take x and remove the data with the untaked measurement (-999.0)
     Input: x: shape (n, d)
     Return: rx: shape (nr, d) The data without columns containing -999
-    '''
+    """
     [n, d] = np.shape(x)
     rx = x.copy()
 
@@ -320,11 +317,11 @@ def average_false_values(x):
 
 def increase_degree(tx, degree):
     [N, D] = np.shape(tx)
-    txd = np.zeros([N, D*degree])
+    txd = np.zeros([N, D * degree])
     # print(txd)
     for i in range(D):
         for j in range(degree):
-            txd[:, D*j+i] = tx[:, i]**(j+1)
+            txd[:, D * j + i] = tx[:, i] ** (j + 1)
     return txd
 
 
@@ -354,8 +351,7 @@ def build_k_indices(x, k_fold, seed):
     interval = int(num_row / k_fold)
     np.random.seed(seed)
     indices = np.random.permutation(num_row)
-    k_indices = [indices[k * interval: (k + 1) * interval]
-                 for k in range(k_fold)]
+    k_indices = [indices[k * interval : (k + 1) * interval] for k in range(k_fold)]
     return np.array(k_indices)
 
 
@@ -365,7 +361,7 @@ def split_data_k_fold(x, y, k_fold, k, seed):
         x:  shape=(N,D)
         y:  shape=(N,D)
         k_fold: K in K-fold, i.e. the fold num
-        k:  scalar, the k-th fold 
+        k:  scalar, the k-th fold
         seed:   the random seed
     """
     k_indices = build_k_indices(x, k_fold, seed)
@@ -415,7 +411,8 @@ def cross_validation(x, y, k_fold, seed, function, prediction_function, *args):
     accs_te = []
     for k in range(k_fold):
         k_acc_tr, k_acc_te = cross_validation_step(
-            x, y, k_fold, k, seed, function, prediction_function, *args)
+            x, y, k_fold, k, seed, function, prediction_function, *args
+        )
         accs_tr.append(k_acc_tr)
         accs_te.append(k_acc_te)
     acc_tr = np.mean(accs_tr)
@@ -425,8 +422,8 @@ def cross_validation(x, y, k_fold, seed, function, prediction_function, *args):
 
 def split_data(x, y, ratio, seed=1):
     """
-    split the dataset based on the split ratio. If ratio is 0.8 
-    you will have 80% of your data set dedicated to training 
+    split the dataset based on the split ratio. If ratio is 0.8
+    you will have 80% of your data set dedicated to training
     and the rest dedicated to testing. If ratio times the number of samples is not round
     you can use np.floor. Also check the documentation for np.random.permutation,
     it could be useful.
@@ -451,8 +448,8 @@ def split_data(x, y, ratio, seed=1):
 
     p = np.random.permutation(x.shape[0])
     x, y = x[p], y[p]
-    x_tr = x[:int(np.floor(ratio*x.shape[0]))]
-    x_te = x[int(np.floor(ratio*x.shape[0])):]
-    y_tr = y[:int(np.floor(ratio*y.shape[0]))]
-    y_te = y[int(np.floor(ratio*y.shape[0])):]
+    x_tr = x[: int(np.floor(ratio * x.shape[0]))]
+    x_te = x[int(np.floor(ratio * x.shape[0])) :]
+    y_tr = y[: int(np.floor(ratio * y.shape[0]))]
+    y_te = y[int(np.floor(ratio * y.shape[0])) :]
     return x_tr, x_te, y_tr, y_te
