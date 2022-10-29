@@ -30,8 +30,9 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
         w: The final weights [numpy array of shape=(D,)].
     """
 
-    loss = -1
     w = initial_w
+    loss = compute_loss(y, tx, w)
+    
     for n_iter in range(max_iters):
         gradient = compute_gradient(y, tx, w)
         loss = compute_loss(y, tx, w)
