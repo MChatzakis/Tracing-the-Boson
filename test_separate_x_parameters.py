@@ -5,7 +5,6 @@ from utils import*
 from implementations import*
 
 
-
 data_path="./dataset/train.csv"
 
 [y, x, ids] = load_csv_data(data_path, sub_sample=False)
