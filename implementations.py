@@ -160,7 +160,8 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma_):
         loss: The logistic loss of the final computation [scalar].
 
     """
-
+    
+    loss = -1
     w = initial_w
 
     for iter in range(max_iters):
