@@ -90,9 +90,11 @@ def least_squares(y, tx):
 
     [N, D] = np.shape(tx)
     w = np.zeros(D)
+    
     w = np.linalg.solve(tx.T @ tx, tx.T) @ y
-    mse = 1./(2*N)*((y-tx @ w).T @ (y-tx @ w))
-
+    #mse = 1./(2*N)*((y-tx @ w).T @ (y-tx @ w))
+    mse = compute_loss(y,tx,w)
+    
     return w, mse
 
 
