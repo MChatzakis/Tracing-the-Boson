@@ -22,7 +22,7 @@ from implementations import *
 
 import black
 
-#Loading the data
+# Loading the data
 data_path = "./dataset/train.csv"
 
 [y, x, ids] = load_csv_data(data_path, sub_sample=False)
@@ -32,8 +32,11 @@ data_path = "./dataset/train.csv"
 id = np.arange(len(x[:, 0]))
 [x0, i0, x1, i1, x2, i2, x3, i3] = separate_4(id, x)
 
-#Loading the partial input feature matrices
-d0 = 8;d1 = 11;d2 = 11;d3 = 11
+# Loading the partial input feature matrices
+d0 = 8
+d1 = 11
+d2 = 11
+d3 = 11
 
 tx0 = increase_degree(add_1_column(remove_false_column_and_average_first(x0)), d0)
 tx1 = increase_degree(add_1_column(remove_false_column_and_average_first(x1)), d1)
@@ -41,7 +44,10 @@ tx2 = increase_degree(add_1_column(average_false_values(x2)), d2)
 tx3 = increase_degree(add_1_column(average_false_values(x3)), d3)
 
 # Partial Training
-lambda_ridge0 = 0.02;lambda_ridge1 = 0.12285714;lambda_ridge2 = 0.03285714;lambda_ridge3 = 0.03285714
+lambda_ridge0 = 0.02
+lambda_ridge1 = 0.12285714
+lambda_ridge2 = 0.03285714
+lambda_ridge3 = 0.03285714
 
 [w0, loss0] = ridge_regression(y0, tx0, lambda_ridge0)
 [w1, loss1] = ridge_regression(y1, tx1, lambda_ridge1)
