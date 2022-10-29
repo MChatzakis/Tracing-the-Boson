@@ -149,7 +149,7 @@ def reg_gradient_descent_logistic(y, tx, lambda_, w, gamma_):
 def penalized_logistic_regression(y, tx, w, lambda_):
     [N, D] = np.shape(tx)
     loss = 1/N*np.sum(np.log(1+np.exp(tx @ w))-np.multiply(y,
-                      (tx @ w)))+lambda_ * np.linalg.norm(w)**2
+                      (tx @ w)))
     #loss=compute_loss_logistic(y, tx, w)+lambda_* np.linalg.norm(w)**2
     gradient = 1/N*tx.T @ (sigmoid(tx @ w)-y)+2*lambda_*w
 
