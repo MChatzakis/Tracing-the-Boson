@@ -136,8 +136,8 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         loss: The logistic loss of the final computation [scalar].
 
     """
-    loss = -1
     w = initial_w
+    loss = compute_loss_logistic(y, tx, w)
 
     for iter in range(max_iters):
         # get loss and update w.
