@@ -140,8 +140,8 @@ def reg_gradient_descent_logistic(y, tx, lambda_, w, gamma_):
         w: shape=(D, 1)
     """
 
-    loss,  gradient = penalized_logistic_regression(y, tx, w, lambda_)
     w = w - gamma_*gradient
+    loss,  gradient = penalized_logistic_regression(y, tx, w, lambda_)
 
     return loss, w
 
