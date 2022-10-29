@@ -163,8 +163,8 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma_):
 
     """
     
-    loss = -1
     w = initial_w
+    loss = 1/y.shape[0]*np.sum(np.log(1+np.exp(tx @ w))-np.multiply(y,(tx @ w)))
 
     for iter in range(max_iters):
         # get loss and update w.
