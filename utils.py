@@ -69,8 +69,8 @@ def gradient_descent_logistic(y, X, w, gamma):
         w: shape=(D, 1)
     """
 
-    loss = compute_loss_logistic(y, X, w)
     w = w-gamma*compute_gradient_logistic(y, X, w)
+    loss = compute_loss_logistic(y, X, w)
 
     return loss, w
 
