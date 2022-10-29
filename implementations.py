@@ -118,9 +118,10 @@ def ridge_regression(y, tx, lambda_):
     w = np.linalg.solve(tx.T.dot(tx) + lambda_*2 *
                         tx.shape[0]*np.identity(tx.shape[1]), tx.T.dot(y))
     error = y - tx.dot(w)
-    mse = 1/(2*y.shape[0])*np.transpose(error).dot(error)
-
-    return w, mse
+    #mse = 1/(2*y.shape[0])*np.transpose(error).dot(error)
+    loss = compute_loss(y,tx,w)
+    
+    return w, loss
 
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
