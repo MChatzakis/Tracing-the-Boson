@@ -32,13 +32,12 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """
 
     w = initial_w
-    loss = compute_loss(y, tx, w)
 
     for n_iter in range(max_iters):
         gradient = compute_gradient(y, tx, w)
-
         w = w - gamma * gradient
-        loss = compute_loss(y, tx, w)
+    
+    loss = compute_loss(y, tx, w)
 
     return w, loss
 
@@ -59,7 +58,7 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
     """
     batch_size = 1
     w = initial_w
-    loss = compute_loss(y, tx, w)
+    #loss = compute_loss(y, tx, w)
 
     for n_iter in range(max_iters):
         # since batch size is 1 might need to change dat
@@ -70,9 +69,7 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
 
             w = w - gamma * gradient
 
-            loss = compute_loss(y, tx, w)
-
-        # print("SGD iter. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
+    loss = compute_loss(y, tx, w)
 
     return w, loss
 
@@ -122,7 +119,6 @@ def ridge_regression(y, tx, lambda_):
         tx.T.dot(tx) + lambda_ * 2 * tx.shape[0] * np.identity(tx.shape[1]), tx.T.dot(y)
     )
     error = y - tx.dot(w)
-    # mse = 1/(2*y.shape[0])*np.transpose(error).dot(error)
     loss = compute_loss(y, tx, w)
 
     return w, loss
