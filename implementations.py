@@ -57,8 +57,9 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
         w: The final weights [numpy array of shape=(D,)]
     """
     batch_size = 1
-    loss = -1
     w = initial_w
+    loss = compute_loss(y, tx, w)
+    
     for n_iter in range(max_iters):
         # since batch size is 1 might need to change dat
         for y_batch, tx_batch in batch_iter(y, tx, batch_size=batch_size, num_batches=1):
