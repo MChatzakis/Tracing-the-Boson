@@ -29,10 +29,10 @@ n93: there are false values in 1 column (1477/22164 false)
 """
 
 
-d0 = 7 #8
+d0 = 7
 d1 = 11
-d2 = 12 #11
-d3 = 9 #11#0.816532
+d2 = 12
+d3 = 9
 
 
 tx0 = increase_degree(add_1_column(remove_false_column_and_average_first(x0)), d0)
@@ -125,4 +125,4 @@ labels_y = unit_4(ly0, id0, ly1, id1, ly2, id2, ly3, id3)
 
 print((len(id0) + len(id1) + len(id2) + len(id3)))
 print(np.shape(labels_y), np.shape(test_ids))
-create_csv_submission(test_ids, labels_y, "./test_results/")
+create_csv_submission(test_ids, labels_y, "./test.csv")

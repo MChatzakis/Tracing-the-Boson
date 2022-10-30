@@ -20,9 +20,6 @@ from helpers import *
 from utils import *
 from implementations import *
 
-import black
-
-
 # Loading the data
 data_path = "./dataset/train.csv"
 
@@ -34,10 +31,10 @@ id = np.arange(len(x[:, 0]))
 [x0, i0, x1, i1, x2, i2, x3, i3] = separate_4(id, x)
 
 # Loading the partial input feature matrices
-d0 = 7
+d0 = 8
 d1 = 11
 d2 = 12
-d3 = 9
+d3 = 12
 
 tx0 = increase_degree(add_1_column(remove_false_column_and_average_first(x0)), d0)
 tx1 = increase_degree(add_1_column(remove_false_column_and_average_first(x1)), d1)
@@ -76,4 +73,4 @@ ly3 = np.sign(tx3t @ w3 - 0.5)
 labels_y = unit_4(ly0, id0, ly1, id1, ly2, id2, ly3, id3)
 
 print("Creating CSV submission in current directory...")
-create_csv_submission(test_ids, labels_y, "./partial_training.csv")
+create_csv_submission(test_ids, labels_y, "./FinalPartialTraining.csv")
