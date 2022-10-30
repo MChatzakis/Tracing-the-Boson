@@ -38,8 +38,8 @@ VERBOSE = False
 yb, input_data, train_ids = load_csv_data(DATASET_PATH, False)
 
 y = yb
-tx = increase_degree(add_1_column(remove_false_columns(input_data)), 3)
-# tx = add_1_column(remove_false_columns(input_data))
+#tx = increase_degree(add_1_column(remove_false_columns(input_data)), 3)
+tx = add_1_column(remove_false_columns(input_data))
 
 
 def gd():
@@ -379,6 +379,73 @@ def evaluate_test_data(test_data_X, weights, ids, name):
     create_csv_submission(ids, labels_y, name)
 
 
+
+def evaluate_partial():
+    data_path = "./dataset/train.csv"
+
+    [y, x, ids] = load_csv_data(data_path, sub_sample=False)
+
+    [x0, y0, x1, y1, x2, y2, x3, y3] = separate_4(y, x)
+
+    id = np.arange(len(x[:, 0]))
+    [x0, i0, x1, i1, x2, i2, x3, i3] = separate_4(id, x)
+
+    # Loading the partial input feature matrices
+    dvals = [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    
+    ls = [0.02, 0.12285714, 0.03285714, 0.03285714]
+    best_d = [-1,-1,-1,-1]
+    
+    xs = [x0,x1,x2,x3]
+    ys = [y0,y1,y2,y3]
+    colors = ["plum","moccasin","lightgray","lightblue"]
+    names = ["x0", "x1", "x2", "x3"]
+    
+    data_d = [{},{},{},{}]
+    
+    for i in range(len(xs)):
+        l = ls[i]
+        
+        print("Partition", i+1, "of", len(xs))
+        best_partition_acc = -1
+        
+        for d in dvals:
+            if(i < 2):
+                ptx = increase_degree(add_1_column(remove_false_column_and_average_first(xs[i])), d)
+            else:
+                ptx = increase_degree(add_1_column(average_false_values(xs[i])), d)
+            
+            test_acc, train_acc = cross_validation(
+                ptx, ys[i], K_FOLDS, SEED, ridge_regression, linear_prediction, l
+            )
+            
+            data_d[i][d] = test_acc
+            
+            if test_acc > best_partition_acc:
+                best_partition_acc = test_acc
+                best_d[i] = d
+    
+    X = np.arange(len(dvals))
+    
+    for i in range(len(data_d)):
+        dict_en = data_d[i]
+        x_d = list(dict_en.keys())
+        y_d = list(dict_en.values())
+        
+        plt.plot(x_d, y_d, "-o", color=colors[i], label=names[i])
+        #plt.bar(X+0.22*i, y_d, color=colors[i],label=names[i],width=0.22)
+    
+    plt.xlabel("Partial Expansion Degree")
+    plt.ylabel("Partial Test Accuracy")
+    plt.title("Expansion Degree Evaluation for Partial Training")
+    #plt.xticks(X+0.22*1.5,dvals)
+    plt.legend()
+    plt.show()
+    
+    print(best_d) #gives [7, 11, 12, 9]
+   
+
+
 def usage():
     print("Cross Validation Evaluation Script. Use:")
 
@@ -423,6 +490,7 @@ function_options = {
     "lr": lr,
     "rlr": rlr,
     "expansion_rr": expansion_rr,
+    "partial":evaluate_partial,
     "usage": usage,
 }
 
@@ -436,8 +504,8 @@ def main():
         sys.exit(-1)
 
     start = time.time()
-    # function_options[function_name]()  # first step of becoming a hacker
-    csv_rr()
+    function_options[function_name]()  # first step of becoming a hacker
+    #csv_rr()
     end = time.time()
 
     print(">>>Train time elapsed (seconds):", end - start)

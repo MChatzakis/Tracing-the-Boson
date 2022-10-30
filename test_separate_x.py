@@ -29,10 +29,10 @@ n93: there are false values in 1 column (1477/22164 false)
 """
 
 
-d0 = 8
+d0 = 7 #8
 d1 = 11
-d2 = 11
-d3 = 11
+d2 = 12 #11
+d3 = 9 #11#0.816532
 
 
 tx0 = increase_degree(add_1_column(remove_false_column_and_average_first(x0)), d0)
@@ -98,7 +98,7 @@ print((n3 - np.count_nonzero(ycal3 - (2 * y3 - 1))) / n3)
 
 y_fin = unit_4(ycal0, i0, ycal1, i1, ycal2, i2, ycal3, i3)
 nfin = len(y_fin)
-print((nfin - np.count_nonzero(y_fin - (2 * y - 1))) / nfin)
+print("FIN", (nfin - np.count_nonzero(y_fin - (2 * y - 1))) / nfin)
 
 
 data_path_test = "./dataset/test.csv"
