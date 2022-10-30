@@ -1,7 +1,7 @@
 """
 -----------------
 helpers.py
-Contains basic helper functions
+Contains basic helper functions mostly provided by the course
 
 cs433-ML Project 1, EPFL
 Ioannis Bantzis, Manos Chatzakis, Maxence Hofer

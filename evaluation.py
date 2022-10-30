@@ -38,8 +38,8 @@ VERBOSE = False
 yb, input_data, train_ids = load_csv_data(DATASET_PATH, False)
 
 y = yb
-# tx = increase_degree(add_1_column(remove_false_columns(input_data)), 3)
-tx = add_1_column(remove_false_columns(input_data))
+tx = increase_degree(add_1_column(remove_false_columns(input_data)), 3)
+# tx = add_1_column(remove_false_columns(input_data))
 
 
 def gd():
@@ -455,7 +455,7 @@ def usage():
     print("'rr'     for ridge regression")
     print("'lr'     for logistic regression")
     print("'rlr'    for regularized logistic regression")
-
+    print("'partial for partial training")
     print("\nExample: python3 evalution.py gd")
 
     print(

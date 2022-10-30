@@ -7,7 +7,7 @@ This repository consists of the following files:
 * implementations.py: Contains all the implementations of the regression models implemented for this work.
 * helpers.py: Contains some helper functions provided by the course
 * utils.py: Utility functions, implemented to aid the implementation of the models
-* run.py: Script reproducing the .csv file of our Aicrowd results.
+* run.py: Script reproducing the .csv file of our Aicrowd results. This is also the implementation of our partial training method.
     * Usage:
     ```shell 
     python3 run.py
@@ -20,11 +20,6 @@ This repository consists of the following files:
     * To see detailed usage examples:
     ```shell 
     python3 evaluation.py usage #prints a helping prompt
-    ```
-* partial_training.py: Script that implements our partial training technique.
-    * Usage:
-    ```shell 
-    python3 partial_training.py
     ```
 * report.pdf: A two-page report about this work.
 * .gitignore: A basic gitignore file for python projects. It ignores /dataset/ named directories, in order to be able to store the dataset locally at our root directory.

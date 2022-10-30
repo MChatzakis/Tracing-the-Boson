@@ -1,7 +1,7 @@
 """
 -----------------
 utils.py
-Contains basic utility functions for the implementations
+Contains basic utility functions for the model implementations
 
 cs433-ML Project 1, EPFL
 Ioannis Bantzis, Manos Chatzakis, Maxence Hofer
@@ -150,16 +150,6 @@ def reg_gradient_descent_logistic(y, tx, lambda_, w, gamma_):
     return loss, w
 
 
-def penalized_logistic_regression(y, tx, w, lambda_):
-    # [N, D] = np.shape(tx)
-    # loss = 1/N*np.sum(np.log(1+np.exp(tx @ w))-np.multiply(y,
-    # (tx @ w)))
-    # gradient = 1/N*tx.T @ (sigmoid(tx @ w)-y)+2*lambda_*w
-
-    # return loss, gradient
-    return
-
-
 """
 -----------------
 Data Preprocessing and Handling function
@@ -196,7 +186,7 @@ def remove_false_lines(y, x):
 
 
 def remove_false_columns(x):
-    """this function take x and remove the data with the untaked measurement (-999.0)
+    """this function takes x and removes the data with the untaked measurement (-999.0)
     Input: x: shape (n, d)
 
     Return: rx: shape (nr, d) The data without columns containing -999
