@@ -391,14 +391,14 @@ def evaluate_partial():
     [x0, i0, x1, i1, x2, i2, x3, i3] = separate_4(id, x)
 
     # Loading the partial input feature matrices
-    dvals = [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    dvals = np.arange(2,14)
     
     ls = [0.02, 0.12285714, 0.03285714, 0.03285714]
     best_d = [-1,-1,-1,-1]
     
     xs = [x0,x1,x2,x3]
     ys = [y0,y1,y2,y3]
-    colors = ["plum","moccasin","lightgray","lightblue"]
+    colors = ["orange","tomato","gray","royalblue"]
     names = ["x0", "x1", "x2", "x3"]
     
     data_d = [{},{},{},{}]
