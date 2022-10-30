@@ -31,10 +31,10 @@ id = np.arange(len(x[:, 0]))
 [x0, i0, x1, i1, x2, i2, x3, i3] = separate_4(id, x)
 
 # Loading the partial input feature matrices
-d0 = 8
+d0 = 7
 d1 = 11
 d2 = 12
-d3 = 12
+d3 = 9
 
 tx0 = increase_degree(add_1_column(remove_false_column_and_average_first(x0)), d0)
 tx1 = increase_degree(add_1_column(remove_false_column_and_average_first(x1)), d1)
