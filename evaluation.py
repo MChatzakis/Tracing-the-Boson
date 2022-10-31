@@ -14,8 +14,6 @@ Ioannis Bantzis, Manos Chatzakis, Maxence Hofer
 -----------------
 """
 
-from cgi import test
-
 import numpy as np
 import matplotlib.pyplot as plt
 
